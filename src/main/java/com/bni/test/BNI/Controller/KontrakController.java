@@ -75,14 +75,40 @@ public class KontrakController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping
-    public ResponseEntity<?> update(@RequestBody Kontrak kontrak){
-        Kontrak updateKontrak = kontrakService.update(kontrak);
-        WebResponse<Kontrak> response = WebResponse.<Kontrak>builder()
-                .status(HttpStatus.CREATED.getReasonPhrase())
-                .message("Succes update Kontrak")
-                .data(updateKontrak)
-                .build();
-        return ResponseEntity.ok(response);
+//    @PutMapping
+//    public ResponseEntity<?> update(@RequestBody Kontrak kontrak){
+//        Kontrak updateKontrak = kontrakService.update(kontrak);
+//        WebResponse<Kontrak> response = WebResponse.<Kontrak>builder()
+//                .status(HttpStatus.CREATED.getReasonPhrase())
+//                .message("Succes update Kontrak")
+//                .data(updateKontrak)
+//                .build();
+//        return ResponseEntity.ok(response);
+//    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<WebResponse<Kontrak>> update(@PathVariable("id") Long id, @RequestBody Kontrak kontrak) {
+        // Pastikan ID yang dikirimkan sesuai dengan ID dari objek kontrak yang akan diperbarui
+        if (!id.equals(kontrak.getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        try {
+            Kontrak updateKontrak = kontrakService.update(kontrak);
+            WebResponse<Kontrak> response = WebResponse.<Kontrak>builder()
+                    .status(HttpStatus.OK.getReasonPhrase())
+                    .message("Success update Kontrak")
+                    .data(updateKontrak)
+                    .build();
+            return ResponseEntity.ok(response);
+        } catch (ResourceNotFoundException e) {
+            // Tangani jika kontrak tidak ditemukan
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new WebResponse<>("Kontrak not found with id: " + id, null));
+        } catch (Exception e) {
+            // Tangani pengecualian lain yang mungkin terjadi saat memperbarui kontrak
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new WebResponse<>("Error occurred while updating Kontrak", null));
+        }
     }
 }

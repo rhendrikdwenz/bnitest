@@ -88,12 +88,23 @@ public class KontrakServiceImpl implements KontrakService {
         if (optionalKontrak.isPresent()) return optionalKontrak.get();
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Kontrak tidak ditemukan");
     }
-
     @Override
+    @Transactional
     public Kontrak update(Kontrak kontrak) {
-        this.getById(kontrak.getId());
-        return kontrakRepository.save(kontrak);
+        Kontrak existingKontrak = getById(kontrak.getId());
+
+        // Perbarui nilai-nilai properti objek kontrak yang diberikan
+        existingKontrak.setPegawai(kontrak.getPegawai());
+        existingKontrak.setJabatan(kontrak.getJabatan());
+        existingKontrak.setCabang(kontrak.getCabang());
+        existingKontrak.setTanggalMulai(kontrak.getTanggalMulai());
+        existingKontrak.setTanggalAkhir(kontrak.getTanggalAkhir());
+        // tambahkan properti lain yang perlu diperbarui
+
+        // Simpan objek kontrak yang diperbarui kembali ke database
+        return kontrakRepository.save(existingKontrak);
     }
+
 
     @Override
     public void deleteById(String id) {
