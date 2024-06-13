@@ -176,33 +176,33 @@ public class KontrakServiceImpl implements KontrakService {
                 Optional<Pegawai> optionalPegawai = pegawaiRepository.findById(kontrakRequest.getPegawaiId());
                 optionalPegawai.ifPresent(kontrak::setPegawai);
             } else {
-                kontrak.setPegawai(null); // Handle case when pegawaiId is null
+                kontrak.setPegawai(null);
             }
 
-            // Set Jabatan
+
             if (kontrakRequest.getJabatanId() != null) {
                 Optional<Jabatan> optionalJabatan = jabatanRepository.findById(kontrakRequest.getJabatanId());
                 optionalJabatan.ifPresent(kontrak::setJabatan);
             } else {
-                kontrak.setJabatan(null); // Handle case when jabatanId is null
+                kontrak.setJabatan(null);
             }
 
-            // Set Cabang
+
             if (kontrakRequest.getCabangId() != null) {
                 Optional<Cabang> optionalCabang = cabangRepository.findById(kontrakRequest.getCabangId());
                 optionalCabang.ifPresent(kontrak::setCabang);
             } else {
-                kontrak.setCabang(null); // Handle case when cabangId is null
+                kontrak.setCabang(null);
             }
 
-            // Check if current date is before or equal to tanggalAkhir
+
             if (kontrak.getTanggalAkhir() != null && LocalDate.now().isBefore(kontrak.getTanggalAkhir())) {
                 kontrak.setStatusContract(StatusContract.Active);
             } else {
                 kontrak.setStatusContract(StatusContract.Expired);
             }
 
-            // Save the updated Kontrak and return it
+
             return kontrakRepository.save(kontrak);
         } else {
             throw new RuntimeException("Kontrak with ID " + kontrakId + " not found");
@@ -224,16 +224,21 @@ public class KontrakServiceImpl implements KontrakService {
 
             if (tanggalAkhir != null) {
                 kontrak.setTanggalAkhir(tanggalAkhir);
-            }
 
-            kontrak.setStatusContract(StatusContract.Active);
+                // Update status contract based on the tanggalAkhir
+                if (tanggalAkhir.isBefore(LocalDate.now())) {
+                    kontrak.setStatusContract(StatusContract.Expired);
+                } else {
+                    kontrak.setStatusContract(StatusContract.Active);
+                }
+            }
 
             return kontrakRepository.save(kontrak);
         } else {
             throw new RuntimeException("Kontrak with ID " + kontrakId + " not found");
         }
-
     }
+
 
 
 

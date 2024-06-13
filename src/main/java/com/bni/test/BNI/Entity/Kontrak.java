@@ -22,18 +22,18 @@ public class Kontrak {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "pegawai_id")
     //@JsonManagedReference
     private Pegawai pegawai;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "jabatan_id")
     //@JsonManagedReference
     private Jabatan jabatan;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cabang_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "cabang_id")
     //@JsonManagedReference
     private Cabang cabang;
 
