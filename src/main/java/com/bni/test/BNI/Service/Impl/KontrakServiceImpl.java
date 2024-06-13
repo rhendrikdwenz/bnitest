@@ -211,16 +211,12 @@ public class KontrakServiceImpl implements KontrakService {
         if (optionalKontrak.isPresent()) {
             Kontrak kontrak = optionalKontrak.get();
 
-            // Update tanggalMulai jika tidak null
-
-            // Update tanggalAkhir jika tidak null
             if (tanggalAkhir != null) {
                 kontrak.setTanggalAkhir(tanggalAkhir);
             }
 
             kontrak.setStatusContract(StatusContract.Active);
 
-            // Simpan perubahan dan kembalikan objek Kontrak yang telah diperbarui
             return kontrakRepository.save(kontrak);
         } else {
             throw new RuntimeException("Kontrak with ID " + kontrakId + " not found");
