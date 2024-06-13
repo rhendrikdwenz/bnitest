@@ -198,17 +198,51 @@ public class KontrakServiceImpl implements KontrakService {
         }
     }
 
-    @Override
+    /*@Override
     @Transactional
     public List<Kontrak> findKontrakByEmailPegawai(String emailPegawai) {
         return kontrakRepository.findByPegawai_Email(emailPegawai);
-    }
+    }*/
+
 
     @Override
     @Transactional
+    public List<Kontrak> findKontrakByEmailPegawai(String emailPegawai) {
+        List<Kontrak> kontrakList = kontrakRepository.findByPegawai_Email(emailPegawai);
+        if (kontrakList == null || kontrakList.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email : " + emailPegawai + " tidak tersedia");
+        }
+        return kontrakList;
+    }
+
+    /*
+     @Override
+     public Nasabah getById(String id) {
+         Optional<Nasabah> optionalNasabah = nasabahRepository.findById(id);
+         if (optionalNasabah.isPresent()) return optionalNasabah.get();
+         throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Nasabah Not Found");
+     }
+
+      */
+   /* @Override
+    @Transactional
     public List<Kontrak> findKontrakByNamaPegawai(String fullName) {
         return kontrakRepository.findByPegawai_FullName(fullName);
+    }*/
+    @Override
+    @Transactional
+    public List<Kontrak> findKontrakByNamaPegawai(String fullName) {
+        List<Kontrak> kontrakList = kontrakRepository.findByPegawai_FullName(fullName);
+        if (kontrakList == null || kontrakList.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nama pegawai : " + fullName + " tidak tersedia");
+        }
+        return  kontrakList;
     }
+
+
+
+
+
 
     @Override
     public void deleteById(String id) {
