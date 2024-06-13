@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -22,17 +24,17 @@ public class Kontrak {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pegawai_id")
-    @JsonManagedReference
+    //@JsonManagedReference
     private Pegawai pegawai;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "jabatan_id")
-    @JsonManagedReference
+    //@JsonManagedReference
     private Jabatan jabatan;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cabang_id")
-    @JsonManagedReference
+    @JoinColumn(name = "cabang_id", nullable = false)
+    //@JsonManagedReference
     private Cabang cabang;
 
     @Column(nullable = false, updatable = false)
