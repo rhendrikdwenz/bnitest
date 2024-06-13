@@ -95,6 +95,17 @@ public class KontrakServiceImpl implements KontrakService {
     }
 
     @Override
+    @Transactional
+    public List<Kontrak> findKontrakByStatusExpired() {
+        return kontrakRepository.findByStatusContract(StatusContract.Expired);
+    }
+
+    @Override
+    public List<Kontrak> findKontrakByStatusActive() {
+        return kontrakRepository.findByStatusContract(StatusContract.Active);
+    }
+
+    @Override
     public Kontrak getById(String id) {
         Optional<Kontrak> optionalKontrak = kontrakRepository.findById(id);
         if (optionalKontrak.isPresent()) return optionalKontrak.get();
@@ -223,6 +234,8 @@ public class KontrakServiceImpl implements KontrakService {
         }
 
     }
+
+
 
     @Override
     @Transactional

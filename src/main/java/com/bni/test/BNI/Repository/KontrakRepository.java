@@ -1,5 +1,6 @@
 package com.bni.test.BNI.Repository;
 
+import com.bni.test.BNI.Constant.StatusContract;
 import com.bni.test.BNI.Entity.Kontrak;
 import com.bni.test.BNI.Entity.Pegawai;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface KontrakRepository extends JpaRepository<Kontrak, String> {
 
     List<Kontrak> findByPegawai_Email(String emailPegawai);
     Optional<Kontrak> findByPegawai(Pegawai pegawai);
+    List<Kontrak> findByStatusContract(StatusContract status);
 }

@@ -16,6 +16,10 @@ public interface KontrakService {
 
     Kontrak getById(String id);
 
+    List<Kontrak> findKontrakByStatusExpired();
+
+    List<Kontrak> findKontrakByStatusActive();
+
     List<Kontrak> findKontrakByNamaPegawai(String fullName);
 
     List<Kontrak> findKontrakByEmailPegawai(String emailPegawai);
@@ -27,14 +31,10 @@ public interface KontrakService {
 
     Kontrak updateTanggalKontrak(String kontrakId, LocalDate tanggalAkhir);
 
+
+
     void checkAndUpdateProductStatus();
 
-    // Pegawai tambahPegawai(PegawaiRequest pegawaiRequest);
-    //    Page<Pegawai> getAllPegawai(Integer page, Integer size);
-    //    Pegawai getById(String id);
-    //    Pegawai update(Pegawai pegawai);
-    //    void deleteById(String id);
 }
 
 
-//interface servicena jd kws kieu

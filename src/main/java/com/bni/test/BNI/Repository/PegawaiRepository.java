@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface PegawaiRepository extends JpaRepository<Pegawai, String> {
     Optional<Pegawai> findByFullName(String fullName);
+
+
 }

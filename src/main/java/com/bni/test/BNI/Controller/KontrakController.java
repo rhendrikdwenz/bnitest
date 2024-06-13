@@ -12,6 +12,7 @@ import com.bni.test.BNI.Service.CabangService;
 import com.bni.test.BNI.Service.KontrakService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -117,5 +118,24 @@ public class KontrakController {
 
         // Mengembalikan response dengan data yang telah diperbarui
         return ResponseEntity.ok(response);
+
+    }
+
+    @GetMapping("/expired")
+    public ResponseEntity<List<Kontrak>> getExpiredKontrak() {
+        List<Kontrak> expiredKontraks = kontrakService.findKontrakByStatusExpired();
+        if (expiredKontraks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(expiredKontraks, HttpStatus.OK);
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<Kontrak>> getActiveKontrak() {
+        List<Kontrak> expiredKontraks = kontrakService.findKontrakByStatusActive();
+        if (expiredKontraks.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(expiredKontraks, HttpStatus.OK);
     }
 }
