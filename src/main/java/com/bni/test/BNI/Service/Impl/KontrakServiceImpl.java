@@ -98,7 +98,7 @@ public class KontrakServiceImpl implements KontrakService {
     public Kontrak getById(String id) {
         Optional<Kontrak> optionalKontrak = kontrakRepository.findById(id);
         if (optionalKontrak.isPresent()) return optionalKontrak.get();
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Kontrak tidak ditemukan");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Kontrak dengan id : " + id + " tidak ditemukan");
     }
     @Override
     @Transactional
