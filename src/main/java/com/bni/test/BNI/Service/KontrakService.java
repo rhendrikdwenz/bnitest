@@ -5,6 +5,7 @@ import com.bni.test.BNI.Model.Request.KontrakRequest;
 import com.bni.test.BNI.Model.Response.KontrakResponse;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface KontrakService {
@@ -23,6 +24,8 @@ public interface KontrakService {
     Kontrak updateKontrak(String kontrakId, KontrakRequest kontrakRequest);
 
     void deleteById(String id);
+
+    Kontrak updateTanggalKontrak(String kontrakId, LocalDate tanggalAkhir);
 
     void checkAndUpdateProductStatus();
 

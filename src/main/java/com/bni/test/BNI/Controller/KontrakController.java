@@ -4,6 +4,7 @@ import com.bni.test.BNI.Entity.Cabang;
 import com.bni.test.BNI.Entity.Kontrak;
 import com.bni.test.BNI.Model.Request.CabangRequest;
 import com.bni.test.BNI.Model.Request.KontrakRequest;
+import com.bni.test.BNI.Model.Request.UpdateRequest;
 import com.bni.test.BNI.Model.Response.KontrakResponse;
 import com.bni.test.BNI.Model.Response.PagingResponse;
 import com.bni.test.BNI.Model.Response.WebResponse;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,7 @@ import java.util.List;
 public class KontrakController {
     @Autowired
     private KontrakService kontrakService;
+
 
     @PostMapping
     public ResponseEntity<?> tambahKontrak(@RequestBody KontrakRequest kontrakRequest) {
@@ -100,5 +103,19 @@ public class KontrakController {
     @PutMapping("/updateByNamaPegawai")
     public Kontrak updateKontrakByNamaPegawai(@RequestParam String fullName, @RequestBody KontrakRequest kontrakRequest) {
         return kontrakService.updateKontrakByNamaPegawai(fullName, kontrakRequest);
+    }
+
+    @PutMapping("/update-kontrak/{kontrakId}")
+    public ResponseEntity<?> updateTanggalKontrak(
+            @PathVariable String kontrakId, @RequestBody UpdateRequest updateRequest) {
+
+        // Panggil service untuk memperbarui tanggal kontrak
+        Kontrak response = kontrakService.updateTanggalKontrak(
+                kontrakId,
+                updateRequest.getTanggalAkhir()
+        );
+
+        // Mengembalikan response dengan data yang telah diperbarui
+        return ResponseEntity.ok(response);
     }
 }
