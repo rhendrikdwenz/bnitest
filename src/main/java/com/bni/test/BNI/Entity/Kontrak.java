@@ -2,6 +2,7 @@ package com.bni.test.BNI.Entity;
 
 import com.bni.test.BNI.Constant.StatusContract;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,14 +22,17 @@ public class Kontrak {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pegawai_id")
+    @JsonManagedReference
     private Pegawai pegawai;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "jabatan_id")
+    @JsonManagedReference
     private Jabatan jabatan;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cabang_id")
+    @JsonManagedReference
     private Cabang cabang;
 
     @Column(nullable = false, updatable = false)

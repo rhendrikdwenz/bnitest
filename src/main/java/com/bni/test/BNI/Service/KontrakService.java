@@ -5,6 +5,8 @@ import com.bni.test.BNI.Model.Request.KontrakRequest;
 import com.bni.test.BNI.Model.Response.KontrakResponse;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface KontrakService {
 
     KontrakResponse tambahKontrak(KontrakRequest kontrakRequest);
@@ -13,7 +15,12 @@ public interface KontrakService {
 
     Kontrak getById(String id);
 
-    Kontrak update(Kontrak kontrak);
+    List<Kontrak> findKontrakByNamaPegawai(String fullName);
+
+    List<Kontrak> findKontrakByEmailPegawai(String emailPegawai);
+
+
+    Kontrak updateKontrak(String kontrakId, KontrakRequest kontrakRequest);
 
     void deleteById(String id);
 
@@ -25,3 +32,6 @@ public interface KontrakService {
     //    Pegawai update(Pegawai pegawai);
     //    void deleteById(String id);
 }
+
+
+//interface servicena jd kws kieu

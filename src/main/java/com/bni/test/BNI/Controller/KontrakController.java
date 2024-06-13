@@ -75,14 +75,25 @@ public class KontrakController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping
-    public ResponseEntity<?> update(@RequestBody Kontrak kontrak){
-        Kontrak updateKontrak = kontrakService.update(kontrak);
-        WebResponse<Kontrak> response = WebResponse.<Kontrak>builder()
-                .status(HttpStatus.CREATED.getReasonPhrase())
-                .message("Succes update Kontrak")
-                .data(updateKontrak)
-                .build();
-        return ResponseEntity.ok(response);
+    @PutMapping("/{kontrakId}")
+    public ResponseEntity<Kontrak> updateKontrak(
+            @PathVariable String kontrakId,
+            @RequestBody KontrakRequest kontrakRequest) {
+        try {
+            Kontrak updatedKontrak = kontrakService.updateKontrak(kontrakId, kontrakRequest);
+            return ResponseEntity.ok(updatedKontrak);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Adjust error handling as needed
+        }
+    }
+
+    @GetMapping("/findByNamaPegawai")
+    public List<Kontrak> findByNamaPegawai(@RequestParam String fullName) {
+        return kontrakService.findKontrakByNamaPegawai(fullName);
+    }
+
+    @GetMapping("/findByEmailPegawai")
+    public List<Kontrak> findByEmailPegawai(@RequestParam String email) {
+        return kontrakService.findKontrakByEmailPegawai(email);
     }
 }

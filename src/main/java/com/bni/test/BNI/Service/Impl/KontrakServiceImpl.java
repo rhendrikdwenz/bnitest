@@ -7,7 +7,10 @@ import com.bni.test.BNI.Entity.Kontrak;
 import com.bni.test.BNI.Entity.Pegawai;
 import com.bni.test.BNI.Model.Request.KontrakRequest;
 import com.bni.test.BNI.Model.Response.KontrakResponse;
+import com.bni.test.BNI.Repository.CabangRepository;
+import com.bni.test.BNI.Repository.JabatanRepository;
 import com.bni.test.BNI.Repository.KontrakRepository;
+import com.bni.test.BNI.Repository.PegawaiRepository;
 import com.bni.test.BNI.Service.CabangService;
 import com.bni.test.BNI.Service.JabatanService;
 import com.bni.test.BNI.Service.KontrakService;
@@ -39,6 +42,15 @@ public class KontrakServiceImpl implements KontrakService {
     private final PegawaiService pegawaiService;
     @Autowired
     private final JabatanService jabatanService;
+
+    @Autowired
+    private PegawaiRepository pegawaiRepository;
+
+    @Autowired
+    private JabatanRepository jabatanRepository;
+
+    @Autowired
+    private CabangRepository cabangRepository;
 
     @Override
     public KontrakResponse tambahKontrak(KontrakRequest kontrakRequest) {
@@ -89,10 +101,109 @@ public class KontrakServiceImpl implements KontrakService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Kontrak tidak ditemukan");
     }
 
+    /*@Override
+    @Transactional
+    public Kontrak updateKontrak(String kontrakId, KontrakRequest kontrakRequest) {
+        Optional<Kontrak> optionalKontrak = kontrakRepository.findById(kontrakId);
+        if (optionalKontrak.isPresent()) {
+            Kontrak kontrak = optionalKontrak.get();
+
+            // Update fields based on KontrakRequest
+            kontrak.setTanggalMulai(kontrakRequest.getTanggalMulai());
+            kontrak.setTanggalAkhir(kontrakRequest.getTanggalAkhir());
+            kontrak.setStatusContract(kontrakRequest.getStatusContract());
+
+            // Set Pegawai
+            if (kontrakRequest.getPegawaiId() != null) {
+                Optional<Pegawai> optionalPegawai = pegawaiRepository.findById(kontrakRequest.getPegawaiId());
+                optionalPegawai.ifPresent(kontrak::setPegawai);
+            } else {
+                kontrak.setPegawai(null); // Handle case when pegawaiId is null
+            }
+
+            // Set Jabatan
+            if (kontrakRequest.getJabatanId() != null) {
+                Optional<Jabatan> optionalJabatan = jabatanRepository.findById(kontrakRequest.getJabatanId());
+                optionalJabatan.ifPresent(kontrak::setJabatan);
+            } else {
+                kontrak.setJabatan(null); // Handle case when jabatanId is null
+            }
+
+            // Set Cabang
+            if (kontrakRequest.getCabangId() != null) {
+                Optional<Cabang> optionalCabang = cabangRepository.findById(kontrakRequest.getCabangId());
+                optionalCabang.ifPresent(kontrak::setCabang);
+            } else {
+                kontrak.setCabang(null); // Handle case when cabangId is null
+            }
+
+            // Simpan perubahan dan kembalikan objek Kontrak yang telah diperbarui
+            return kontrakRepository.save(kontrak);
+        } else {
+            throw new RuntimeException("Kontrak with ID " + kontrakId + " not found");
+        }
+    }*/
+
     @Override
-    public Kontrak update(Kontrak kontrak) {
-        this.getById(kontrak.getId());
-        return kontrakRepository.save(kontrak);
+    @Transactional
+    public Kontrak updateKontrak(String kontrakId, KontrakRequest kontrakRequest) {
+        Optional<Kontrak> optionalKontrak = kontrakRepository.findById(kontrakId);
+        if (optionalKontrak.isPresent()) {
+            Kontrak kontrak = optionalKontrak.get();
+
+            // Update fields based on KontrakRequest
+            kontrak.setTanggalMulai(kontrakRequest.getTanggalMulai());
+            kontrak.setTanggalAkhir(kontrakRequest.getTanggalAkhir());
+            kontrak.setStatusContract(kontrakRequest.getStatusContract());
+
+            // Set Pegawai
+            if (kontrakRequest.getPegawaiId() != null) {
+                Optional<Pegawai> optionalPegawai = pegawaiRepository.findById(kontrakRequest.getPegawaiId());
+                optionalPegawai.ifPresent(kontrak::setPegawai);
+            } else {
+                kontrak.setPegawai(null); // Handle case when pegawaiId is null
+            }
+
+            // Set Jabatan
+            if (kontrakRequest.getJabatanId() != null) {
+                Optional<Jabatan> optionalJabatan = jabatanRepository.findById(kontrakRequest.getJabatanId());
+                optionalJabatan.ifPresent(kontrak::setJabatan);
+            } else {
+                kontrak.setJabatan(null); // Handle case when jabatanId is null
+            }
+
+            // Set Cabang
+            if (kontrakRequest.getCabangId() != null) {
+                Optional<Cabang> optionalCabang = cabangRepository.findById(kontrakRequest.getCabangId());
+                optionalCabang.ifPresent(kontrak::setCabang);
+            } else {
+                kontrak.setCabang(null); // Handle case when cabangId is null
+            }
+
+            // Check if current date is before or equal to tanggalAkhir
+            if (kontrak.getTanggalAkhir() != null && LocalDate.now().isBefore(kontrak.getTanggalAkhir())) {
+                kontrak.setStatusContract(StatusContract.Active);
+            } else {
+                kontrak.setStatusContract(StatusContract.Expired);
+            }
+
+            // Save the updated Kontrak and return it
+            return kontrakRepository.save(kontrak);
+        } else {
+            throw new RuntimeException("Kontrak with ID " + kontrakId + " not found");
+        }
+    }
+
+    @Override
+    @Transactional
+    public List<Kontrak> findKontrakByEmailPegawai(String emailPegawai) {
+        return kontrakRepository.findByPegawai_Email(emailPegawai);
+    }
+
+    @Override
+    @Transactional
+    public List<Kontrak> findKontrakByNamaPegawai(String fullName) {
+        return kontrakRepository.findByPegawai_FullName(fullName);
     }
 
     @Override
