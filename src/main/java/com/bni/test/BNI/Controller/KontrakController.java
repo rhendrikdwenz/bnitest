@@ -96,4 +96,9 @@ public class KontrakController {
     public List<Kontrak> findByEmailPegawai(@RequestParam String email) {
         return kontrakService.findKontrakByEmailPegawai(email);
     }
+
+    @PutMapping("/updateByNamaPegawai")
+    public Kontrak updateKontrakByNamaPegawai(@RequestParam String fullName, @RequestBody KontrakRequest kontrakRequest) {
+        return kontrakService.updateKontrakByNamaPegawai(fullName, kontrakRequest);
+    }
 }

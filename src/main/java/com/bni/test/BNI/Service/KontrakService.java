@@ -18,7 +18,7 @@ public interface KontrakService {
     List<Kontrak> findKontrakByNamaPegawai(String fullName);
 
     List<Kontrak> findKontrakByEmailPegawai(String emailPegawai);
-
+    Kontrak updateKontrakByNamaPegawai(String fullName, KontrakRequest kontrakRequest);
 
     Kontrak updateKontrak(String kontrakId, KontrakRequest kontrakRequest);
 
