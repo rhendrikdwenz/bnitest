@@ -132,8 +132,7 @@ public class KontrakServiceImpl implements KontrakService {
                     kontrak.setStatusContract(StatusContract.Active);
                 }
 
-                // Update other fields
-                // Set Jabatan
+
                 if (kontrakRequest.getJabatanId() != null) {
                     Optional<Jabatan> optionalJabatan = jabatanRepository.findById(kontrakRequest.getJabatanId());
                     optionalJabatan.ifPresent(kontrak::setJabatan);
@@ -141,7 +140,7 @@ public class KontrakServiceImpl implements KontrakService {
                     kontrak.setJabatan(null); // Handle case when jabatanId is null
                 }
 
-                // Set Cabang
+
                 if (kontrakRequest.getCabangId() != null) {
                     Optional<Cabang> optionalCabang = cabangRepository.findById(kontrakRequest.getCabangId());
                     optionalCabang.ifPresent(kontrak::setCabang);
@@ -149,7 +148,7 @@ public class KontrakServiceImpl implements KontrakService {
                     kontrak.setCabang(null); // Handle case when cabangId is null
                 }
 
-                // Simpan perubahan dan kembalikan objek Kontrak yang telah diperbarui
+
                 return kontrakRepository.save(kontrak);
             } else {
                 throw new RuntimeException("Kontrak for Pegawai with fullName " + fullName + " not found");
@@ -271,7 +270,7 @@ public class KontrakServiceImpl implements KontrakService {
     public List<Kontrak> findKontrakByNamaPegawai(String fullName) {
         List<Kontrak> kontrakList = kontrakRepository.findByPegawai_FullName(fullName);
         if (kontrakList == null || kontrakList.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nama pegawai : " + fullName + " tidak tersedia");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Tidak ada data kontrak yang ditemukan untuk nama " + fullName);
         }
         return  kontrakList;
     }

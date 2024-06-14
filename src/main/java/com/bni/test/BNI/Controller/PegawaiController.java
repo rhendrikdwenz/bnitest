@@ -42,7 +42,7 @@ public class PegawaiController {
                 .build();
         WebResponse<List<Pegawai>> response = WebResponse.<List<Pegawai>> builder()
                 .status(HttpStatus.CREATED.getReasonPhrase())
-                .message("Succes Get List Nasabah")
+                .message("Sukses Menampilkan Data Pegawai")
                 .paging(pagingResponse)
                 .data(pegawaiList.getContent())
                 .build();
@@ -53,7 +53,7 @@ public class PegawaiController {
     public ResponseEntity<?> getById(@PathVariable String id){
         Pegawai findPegawai = pegawaiService.getById(id);
         WebResponse<Pegawai> response = WebResponse.<Pegawai>builder()
-                .status("Success Get Nasabah")
+                .status("Sukses Menampilkan Data Pegawai")
                 .data(findPegawai)
                 .build();
         return ResponseEntity.ok(response);
@@ -63,7 +63,7 @@ public class PegawaiController {
         pegawaiService.deleteById(id);
         WebResponse<String> response = WebResponse.<String>builder()
                 .status(HttpStatus.CREATED.getReasonPhrase())
-                .message("Succes delete nasabah")
+                .message("Sukses menghapus data Pegawai dengan id: " + id)
                 .data("OK")
                 .build();
         return ResponseEntity.ok(response);
@@ -74,7 +74,7 @@ public class PegawaiController {
         Pegawai updatePegawai = pegawaiService.update(pegawai);
         WebResponse<Pegawai> response = WebResponse.<Pegawai>builder()
                 .status(HttpStatus.CREATED.getReasonPhrase())
-                .message("Succes update nasabah")
+                .message("Sukses meng-update data Pegawai")
                 .data(updatePegawai)
                 .build();
         return ResponseEntity.ok(response);

@@ -91,10 +91,31 @@ public class KontrakController {
         }
     }
 
-    @GetMapping("/findByNamaPegawai")
+   /* @GetMapping("/findByNamaPegawai")
     public List<Kontrak> findByNamaPegawai(@RequestParam String fullName) {
         return kontrakService.findKontrakByNamaPegawai(fullName);
+    }*/
+    @GetMapping("/findByNamaPegawai")
+    public ResponseEntity<WebResponse<List<Kontrak>>> findByNamaPegawai(@RequestParam String fullName) {
+        List<Kontrak> kontraks = kontrakService.findKontrakByNamaPegawai(fullName);
+        if (kontraks.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(WebResponse.<List<Kontrak>>builder()
+                            .status(HttpStatus.NO_CONTENT.getReasonPhrase())
+                            .message("Tidak ada data kontrak yang ditemukan untuk nama " + fullName + " pegawai tersebut")
+                            .data(kontraks)
+                            .build());
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(WebResponse.<List<Kontrak>>builder()
+                        .status(HttpStatus.OK.getReasonPhrase())
+                        .message("Sukses menampilkan data dengan nama: " + fullName)
+                        .data(kontraks)
+                        .build());
     }
+
 
     @GetMapping("/findByEmailPegawai")
     public List<Kontrak> findByEmailPegawai(@RequestParam String email) {
@@ -106,7 +127,7 @@ public class KontrakController {
         return kontrakService.updateKontrakByNamaPegawai(fullName, kontrakRequest);
     }
 
-    @PutMapping("/update-kontrak/{kontrakId}")
+    /*@PutMapping("/update-kontrak/{kontrakId}")
     public ResponseEntity<?> updateTanggalKontrak(
             @PathVariable String kontrakId, @RequestBody UpdateRequest updateRequest) {
 
@@ -119,25 +140,86 @@ public class KontrakController {
         // Mengembalikan response dengan data yang telah diperbarui
         return ResponseEntity.ok(response);
 
+    }*/
+    @PutMapping("/update-kontrak/{kontrakId}")
+    public ResponseEntity<?> updateTanggalKontrak(
+            @PathVariable String kontrakId, @RequestBody UpdateRequest updateRequest) {
+
+        // Panggil service untuk memperbarui tanggal kontrak
+        Kontrak response = kontrakService.updateTanggalKontrak(
+                kontrakId,
+                updateRequest.getTanggalAkhir()
+        );
+
+        // Mengembalikan response dengan data yang telah diperbarui
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(WebResponse.<Kontrak>builder()
+                        .status(HttpStatus.OK.getReasonPhrase())
+                        .message("Sukses Memperbaharui kontrak")
+                        .data(response)
+                        .build());
+
     }
 
-    @GetMapping("/expired")
+    /*@GetMapping("/expired")
     public ResponseEntity<List<Kontrak>> getExpiredKontrak() {
         List<Kontrak> expiredKontraks = kontrakService.findKontrakByStatusExpired();
         if (expiredKontraks.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(expiredKontraks, HttpStatus.OK);
+    }*/
+    @GetMapping("/expired")
+    public ResponseEntity<WebResponse<List<Kontrak>>> getExpiredKontrak() {
+        List<Kontrak> expiredKontraks = kontrakService.findKontrakByStatusExpired();
+        if (expiredKontraks.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(WebResponse.<List<Kontrak>>builder()
+                            .status(HttpStatus.NO_CONTENT.getReasonPhrase())
+                            .message("Tidak ada data kontrak yang Expired")
+                            .data(expiredKontraks)
+                            .build());
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(WebResponse.<List<Kontrak>>builder()
+                        .status(HttpStatus.OK.getReasonPhrase())
+                        .message("Sukses mengambil data kontrak yang Expired")
+                        .data(expiredKontraks)
+                        .build());
     }
 
-    @GetMapping("/active")
+    /*@GetMapping("/active")
     public ResponseEntity<List<Kontrak>> getActiveKontrak() {
         List<Kontrak> expiredKontraks = kontrakService.findKontrakByStatusActive();
         if (expiredKontraks.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(expiredKontraks, HttpStatus.OK);
+    }*/
+    @GetMapping("/active")
+    public ResponseEntity<WebResponse<List<Kontrak>>> getActiveKontrak() {
+        List<Kontrak> activeKontraks = kontrakService.findKontrakByStatusActive();
+        if (activeKontraks.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NO_CONTENT)
+                    .body(WebResponse.<List<Kontrak>>builder()
+                            .status(HttpStatus.NO_CONTENT.getReasonPhrase())
+                            .message("Tidak ada data kontrak yang aktif")
+                            .data(activeKontraks)
+                            .build());
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(WebResponse.<List<Kontrak>>builder()
+                        .status(HttpStatus.OK.getReasonPhrase())
+                        .message("Sukses mengambil data kontrak yang Active")
+                        .data(activeKontraks)
+                        .build());
     }
+
 
     //EXCELL :
 
