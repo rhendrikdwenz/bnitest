@@ -14,7 +14,7 @@ public interface CabangService {
     Cabang update(Cabang cabang);
 
     void deleteById(String id);
-
+    //void addCabangToExcel(Cabang cabang);
 
     // Pegawai tambahPegawai(PegawaiRequest pegawaiRequest);
     //    Page<Pegawai> getAllPegawai(Integer page, Integer size);
