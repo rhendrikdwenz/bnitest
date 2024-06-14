@@ -20,4 +20,6 @@ public class PegawaiRequest {
     private String phoneNumber;
     @NotBlank(message = "Alamat tidak boleh kosong")
     private String address;
+    private String username;
+    private String password;
 }

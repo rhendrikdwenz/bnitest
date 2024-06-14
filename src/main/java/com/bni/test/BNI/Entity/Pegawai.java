@@ -26,4 +26,9 @@ public class Pegawai {
     private String phoneNumber;
 
     private String address;
+
+    @OneToOne
+    // @JoinColumn(name = "user_credential_id")
+    private UserCredential userCredential;
+
 }

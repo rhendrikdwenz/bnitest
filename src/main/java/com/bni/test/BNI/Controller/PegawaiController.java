@@ -5,20 +5,24 @@ import com.bni.test.BNI.Model.Request.PegawaiRequest;
 import com.bni.test.BNI.Model.Response.PagingResponse;
 import com.bni.test.BNI.Model.Response.WebResponse;
 import com.bni.test.BNI.Service.PegawaiService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/pegawai")
+@RequestMapping("/api/v1/pegawai")
+@AllArgsConstructor
 public class PegawaiController {
     @Autowired
     private PegawaiService pegawaiService;
     @PostMapping
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public ResponseEntity<?> tambahPegawai(@RequestBody PegawaiRequest pegawaiRequest) {
         Pegawai newPegawai = pegawaiService.tambahPegawai(pegawaiRequest);
         WebResponse<Pegawai> response = WebResponse.<Pegawai>builder()
@@ -29,6 +33,7 @@ public class PegawaiController {
         return ResponseEntity.ok(response);
     }
     @GetMapping
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'PEGAWAI')")
     public ResponseEntity<?> getAllPegawai(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size
@@ -50,6 +55,7 @@ public class PegawaiController {
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'PEGAWAI')")
     public ResponseEntity<?> getById(@PathVariable String id){
         Pegawai findPegawai = pegawaiService.getById(id);
         WebResponse<Pegawai> response = WebResponse.<Pegawai>builder()
@@ -59,6 +65,7 @@ public class PegawaiController {
         return ResponseEntity.ok(response);
     }
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public ResponseEntity<?> deleteById(@PathVariable String id){
         pegawaiService.deleteById(id);
         WebResponse<String> response = WebResponse.<String>builder()
@@ -70,6 +77,7 @@ public class PegawaiController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public ResponseEntity<?> update(@RequestBody Pegawai pegawai){
         Pegawai updatePegawai = pegawaiService.update(pegawai);
         WebResponse<Pegawai> response = WebResponse.<Pegawai>builder()

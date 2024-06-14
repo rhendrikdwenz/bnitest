@@ -7,16 +7,20 @@ import com.bni.test.BNI.Model.Request.JabatanRequest;
 import com.bni.test.BNI.Model.Response.PagingResponse;
 import com.bni.test.BNI.Model.Response.WebResponse;
 import com.bni.test.BNI.Service.CabangService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/cabang")
+@RequestMapping("/api/v1/cabang")
+@AllArgsConstructor
+@PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
 public class CabangController {
     @Autowired
     private CabangService cabangService;
